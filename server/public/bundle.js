@@ -753,7 +753,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 
 
 var bind = __webpack_require__(176);
-var isBuffer = __webpack_require__(460);
+var isBuffer = __webpack_require__(459);
 
 /*global toString:true*/
 
@@ -4764,7 +4764,7 @@ exports.default = matchPath;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(23);
-var normalizeHeaderName = __webpack_require__(462);
+var normalizeHeaderName = __webpack_require__(461);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -7876,7 +7876,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.fetchUsers = exports.FETCH_USERS = undefined;
 
-var _axios = __webpack_require__(458);
+var _axios = __webpack_require__(457);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -7944,12 +7944,12 @@ module.exports = function bind(fn, thisArg) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(23);
-var settle = __webpack_require__(463);
-var buildURL = __webpack_require__(465);
-var parseHeaders = __webpack_require__(466);
-var isURLSameOrigin = __webpack_require__(467);
+var settle = __webpack_require__(462);
+var buildURL = __webpack_require__(464);
+var parseHeaders = __webpack_require__(465);
+var isURLSameOrigin = __webpack_require__(466);
 var createError = __webpack_require__(178);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(468);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(467);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -8046,7 +8046,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(469);
+      var cookies = __webpack_require__(468);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -8131,7 +8131,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(464);
+var enhanceError = __webpack_require__(463);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -8220,7 +8220,7 @@ var _Routes = __webpack_require__(455);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-var _reducers = __webpack_require__(477);
+var _reducers = __webpack_require__(476);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -37978,29 +37978,28 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Home = __webpack_require__(456);
+var _HomePage = __webpack_require__(478);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _HomePage2 = _interopRequireDefault(_HomePage);
 
-var _UsersList = __webpack_require__(457);
+var _UsersListPage = __webpack_require__(456);
 
-var _UsersList2 = _interopRequireDefault(_UsersList);
+var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [{
+exports.default = [_extends({}, _HomePage2.default, {
     path: '/',
-    component: _Home2.default,
     exact: true
-}, {
-    loadData: _UsersList.loadData,
-    path: '/users',
-    component: _UsersList2.default
-}];
+}), _extends({}, _UsersListPage2.default, {
+    path: '/users'
+})];
 
 /***/ }),
 /* 456 */
@@ -38012,45 +38011,6 @@ exports.default = [{
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Home = function Home() {
-    return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-            'div',
-            null,
-            'I am the home component'
-        ),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return console.log('Hi there!');
-                } },
-            'Press me!'
-        )
-    );
-};
-
-exports.default = Home;
-
-/***/ }),
-/* 457 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.loadData = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -38122,17 +38082,19 @@ function loadData(store) {
     return store.dispatch((0, _actions.fetchUsers)());
 }
 
-exports.loadData = loadData;
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchUsers: _actions.fetchUsers })(UsersList);
+exports.default = {
+    loadData: loadData,
+    component: (0, _reactRedux.connect)(mapStateToProps, { fetchUsers: _actions.fetchUsers })(UsersList)
+};
+
+/***/ }),
+/* 457 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(458);
 
 /***/ }),
 /* 458 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(459);
-
-/***/ }),
-/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38140,7 +38102,7 @@ module.exports = __webpack_require__(459);
 
 var utils = __webpack_require__(23);
 var bind = __webpack_require__(176);
-var Axios = __webpack_require__(461);
+var Axios = __webpack_require__(460);
 var defaults = __webpack_require__(117);
 
 /**
@@ -38175,14 +38137,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(180);
-axios.CancelToken = __webpack_require__(475);
+axios.CancelToken = __webpack_require__(474);
 axios.isCancel = __webpack_require__(179);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(476);
+axios.spread = __webpack_require__(475);
 
 module.exports = axios;
 
@@ -38191,7 +38153,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 460 */
+/* 459 */
 /***/ (function(module, exports) {
 
 /*!
@@ -38218,7 +38180,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 461 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38226,10 +38188,10 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(117);
 var utils = __webpack_require__(23);
-var InterceptorManager = __webpack_require__(470);
-var dispatchRequest = __webpack_require__(471);
-var isAbsoluteURL = __webpack_require__(473);
-var combineURLs = __webpack_require__(474);
+var InterceptorManager = __webpack_require__(469);
+var dispatchRequest = __webpack_require__(470);
+var isAbsoluteURL = __webpack_require__(472);
+var combineURLs = __webpack_require__(473);
 
 /**
  * Create a new instance of Axios
@@ -38311,7 +38273,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 462 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38330,7 +38292,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 463 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38363,7 +38325,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 464 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38391,7 +38353,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 465 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38466,7 +38428,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 466 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38510,7 +38472,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 467 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38585,7 +38547,7 @@ module.exports = (
 
 
 /***/ }),
-/* 468 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38628,7 +38590,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 469 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38688,7 +38650,7 @@ module.exports = (
 
 
 /***/ }),
-/* 470 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38747,14 +38709,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 471 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(23);
-var transformData = __webpack_require__(472);
+var transformData = __webpack_require__(471);
 var isCancel = __webpack_require__(179);
 var defaults = __webpack_require__(117);
 
@@ -38833,7 +38795,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 472 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38860,7 +38822,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 473 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38881,7 +38843,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 474 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38902,7 +38864,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 475 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38966,7 +38928,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 476 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39000,7 +38962,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 477 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39012,7 +38974,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(113);
 
-var _usersReducer = __webpack_require__(478);
+var _usersReducer = __webpack_require__(477);
 
 var _usersReducer2 = _interopRequireDefault(_usersReducer);
 
@@ -39023,7 +38985,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 478 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39046,6 +39008,46 @@ exports.default = function () {
             return state;
     }
 }; // curly bracers for type import
+
+/***/ }),
+/* 478 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Home = function Home() {
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            'div',
+            null,
+            'I am the home component'
+        ),
+        _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                    return console.log('Hi there!');
+                } },
+            'Press me!'
+        )
+    );
+};
+
+exports.default = {
+    component: Home
+};
 
 /***/ })
 /******/ ]);
