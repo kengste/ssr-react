@@ -22,8 +22,13 @@ app.get('*', (req, res) => {
         return route.loadData ? route.loadData(store) : null;
     });
     Promise.all(promises).then(() => {
+        const context = {};
+        const content = renderer(req, store, context);
+        if (context.notFound) {
+            res.status(404);
+        }
         // some logic to initialize and load data into the store
-        res.send(renderer(req, store)); 
+        res.send(content); 
     });
 });
 
