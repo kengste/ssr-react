@@ -188,13 +188,13 @@ var fetchAdmins = exports.fetchAdmins = function fetchAdmins() {
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-router-config");
+module.exports = require("react-redux");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-redux");
+module.exports = require("react-router-config");
 
 /***/ }),
 /* 4 */
@@ -225,11 +225,11 @@ var _UsersListPage = __webpack_require__(14);
 
 var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
-var _NotFoundPage = __webpack_require__(24);
+var _NotFoundPage = __webpack_require__(15);
 
 var _NotFoundPage2 = _interopRequireDefault(_NotFoundPage);
 
-var _AdminsListPage = __webpack_require__(26);
+var _AdminsListPage = __webpack_require__(16);
 
 var _AdminsListPage2 = _interopRequireDefault(_AdminsListPage);
 
@@ -271,7 +271,7 @@ var _express = __webpack_require__(9);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _reactRouterConfig = __webpack_require__(2);
+var _reactRouterConfig = __webpack_require__(3);
 
 var _expressHttpProxy = __webpack_require__(10);
 
@@ -281,11 +281,11 @@ var _Routes = __webpack_require__(4);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-var _renderer = __webpack_require__(15);
+var _renderer = __webpack_require__(17);
 
 var _renderer2 = _interopRequireDefault(_renderer);
 
-var _createStore = __webpack_require__(18);
+var _createStore = __webpack_require__(20);
 
 var _createStore2 = _interopRequireDefault(_createStore);
 
@@ -307,6 +307,12 @@ app.get('*', function (req, res) {
         var route = _ref.route;
 
         return route.loadData ? route.loadData(store) : null;
+    }).map(function (promise) {
+        if (promise) {
+            return new Promise(function (resolve, reject) {
+                promise.then(resolve).catch(resolve);
+            });
+        }
     });
     Promise.all(promises).then(function () {
         var context = {};
@@ -356,7 +362,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterConfig = __webpack_require__(2);
+var _reactRouterConfig = __webpack_require__(3);
 
 var _Header = __webpack_require__(12);
 
@@ -404,7 +410,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(5);
 
-var _reactRedux = __webpack_require__(3);
+var _reactRedux = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -526,7 +532,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(3);
+var _reactRedux = __webpack_require__(2);
 
 var _actions = __webpack_require__(1);
 
@@ -610,200 +616,6 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(16);
-
-var _reactRouterDom = __webpack_require__(5);
-
-var _reactRedux = __webpack_require__(3);
-
-var _reactRouterConfig = __webpack_require__(2);
-
-var _serializeJavascript = __webpack_require__(17);
-
-var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
-
-var _Routes = __webpack_require__(4);
-
-var _Routes2 = _interopRequireDefault(_Routes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (req, store, context) {
-    var content = (0, _server.renderToString)(_react2.default.createElement(
-        _reactRedux.Provider,
-        { store: store },
-        _react2.default.createElement(
-            _reactRouterDom.StaticRouter,
-            { location: req.path, context: context },
-            _react2.default.createElement(
-                'div',
-                null,
-                (0, _reactRouterConfig.renderRoutes)(_Routes2.default)
-            )
-        )
-    ));
-    return '\n        <html>\n            <head>\n              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">            \n            </head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script>\n                    window.INITIAL_STATE = ' + (0, _serializeJavascript2.default)(store.getState()) + '\n                </script>\n                <script src="bundle.js"></script>\n            </body>\n        </html>\n    ';
-};
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom/server");
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = require("serialize-javascript");
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _redux = __webpack_require__(6);
-
-var _reduxThunk = __webpack_require__(19);
-
-var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
-
-var _axios = __webpack_require__(20);
-
-var _axios2 = _interopRequireDefault(_axios);
-
-var _reducers = __webpack_require__(21);
-
-var _reducers2 = _interopRequireDefault(_reducers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (req) {
-    var axiosInstance = _axios2.default.create({
-        baseURL: 'http://react-ssr-api.herokuapp.com',
-        headers: { cookie: req.get('cookie') || '' }
-    });
-    var store = (0, _redux.createStore)(_reducers2.default, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default.withExtraArgument(axiosInstance)));
-
-    return store;
-};
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("redux-thunk");
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-module.exports = require("axios");
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _redux = __webpack_require__(6);
-
-var _usersReducer = __webpack_require__(22);
-
-var _usersReducer2 = _interopRequireDefault(_usersReducer);
-
-var _authReducer = __webpack_require__(23);
-
-var _authReducer2 = _interopRequireDefault(_authReducer);
-
-var _adminsReducer = __webpack_require__(25);
-
-var _adminsReducer2 = _interopRequireDefault(_adminsReducer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _redux.combineReducers)({
-    users: _usersReducer2.default,
-    auth: _authReducer2.default,
-    admins: _adminsReducer2.default
-});
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _actions = __webpack_require__(1);
-
-exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var action = arguments[1];
-
-    switch (action.type) {
-        case _actions.FETCH_USERS:
-            return action.payload.data;
-        default:
-            return state;
-    }
-}; // curly bracers for type import
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var action = arguments[1];
-
-    switch (action.type) {
-        case _actions.FETCH_CURRENT_USER:
-            return action.payload.data || false;
-        default:
-            return state;
-    }
-};
-
-var _actions = __webpack_require__(1);
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NotFoundPage = function NotFoundPage(_ref) {
@@ -823,32 +635,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _actions = __webpack_require__(1);
-
-exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var action = arguments[1];
-
-    switch (action.type) {
-        case _actions.FETCH_ADMINS:
-            return action.payload.data;
-        default:
-            return state;
-    }
-};
-
-/***/ }),
-/* 26 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -864,7 +651,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(3);
+var _reactRedux = __webpack_require__(2);
 
 var _actions = __webpack_require__(1);
 
@@ -935,6 +722,225 @@ exports.default = {
     loadData: function loadData(_ref2) {
         var dispatch = _ref2.dispatch;
         return dispatch((0, _actions.fetchAdmins)());
+    }
+};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _server = __webpack_require__(18);
+
+var _reactRouterDom = __webpack_require__(5);
+
+var _reactRedux = __webpack_require__(2);
+
+var _reactRouterConfig = __webpack_require__(3);
+
+var _serializeJavascript = __webpack_require__(19);
+
+var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
+
+var _Routes = __webpack_require__(4);
+
+var _Routes2 = _interopRequireDefault(_Routes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (req, store, context) {
+    var content = (0, _server.renderToString)(_react2.default.createElement(
+        _reactRedux.Provider,
+        { store: store },
+        _react2.default.createElement(
+            _reactRouterDom.StaticRouter,
+            { location: req.path, context: context },
+            _react2.default.createElement(
+                'div',
+                null,
+                (0, _reactRouterConfig.renderRoutes)(_Routes2.default)
+            )
+        )
+    ));
+    return '\n        <html>\n            <head>\n              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">            \n            </head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script>\n                    window.INITIAL_STATE = ' + (0, _serializeJavascript2.default)(store.getState()) + '\n                </script>\n                <script src="bundle.js"></script>\n            </body>\n        </html>\n    ';
+};
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-dom/server");
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("serialize-javascript");
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(6);
+
+var _reduxThunk = __webpack_require__(21);
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+var _axios = __webpack_require__(22);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reducers = __webpack_require__(23);
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (req) {
+    var axiosInstance = _axios2.default.create({
+        baseURL: 'http://react-ssr-api.herokuapp.com',
+        headers: { cookie: req.get('cookie') || '' }
+    });
+    var store = (0, _redux.createStore)(_reducers2.default, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default.withExtraArgument(axiosInstance)));
+
+    return store;
+};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("redux-thunk");
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = require("axios");
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(6);
+
+var _usersReducer = __webpack_require__(24);
+
+var _usersReducer2 = _interopRequireDefault(_usersReducer);
+
+var _authReducer = __webpack_require__(25);
+
+var _authReducer2 = _interopRequireDefault(_authReducer);
+
+var _adminsReducer = __webpack_require__(26);
+
+var _adminsReducer2 = _interopRequireDefault(_adminsReducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _redux.combineReducers)({
+    users: _usersReducer2.default,
+    auth: _authReducer2.default,
+    admins: _adminsReducer2.default
+});
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _actions = __webpack_require__(1);
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.FETCH_USERS:
+            return action.payload.data;
+        default:
+            return state;
+    }
+}; // curly bracers for type import
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.FETCH_CURRENT_USER:
+            return action.payload.data || false;
+        default:
+            return state;
+    }
+};
+
+var _actions = __webpack_require__(1);
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _actions = __webpack_require__(1);
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.FETCH_ADMINS:
+            return action.payload.data;
+        default:
+            return state;
     }
 };
 
